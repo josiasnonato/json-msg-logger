@@ -87,7 +87,7 @@ class LoggerMessages():
     l.log(level=self.message.get_level(), msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     # Clear self data after print
     self.clear()
-    l.handlers[0].flush()
+    # l.handlers[0].flush()
     
 
 # Example to print a log with simple message
