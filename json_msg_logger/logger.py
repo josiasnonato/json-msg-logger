@@ -1,11 +1,8 @@
 import grpc
 import logging
 
-# import askly_store. as config_module
-
 import json_msg_logger.messages as messages_module
 import json_msg_logger.messages as logging_config_module
-# from askly_store.config.config import global_config
 
 class LoggerMessages():
 
