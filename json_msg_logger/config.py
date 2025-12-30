@@ -37,7 +37,7 @@ class LogLevels(logging.Logger):
 def start_logger(app_name: str) -> logging.Logger:
 
   logging.addLevelName(TRACE_LEVEL, "TRACE")
-  logger = logging.getLogger(__name__.split(".")[0])
+  logger = logging.getLogger(app_name)
   logger.setLevel(logging._nameToLevel.get("INFO"))
 
   # Avoid adding duplicate handlers

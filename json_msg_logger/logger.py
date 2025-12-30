@@ -9,8 +9,7 @@ class Logger():
     self.extra: dict = {}
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
-    self.logger = logging.getLogger(__name__.split(".")[0])
-    print(f"Este é um {__name__.split(".")[0]}")
+    self.logger = logging.getLogger("caldoc")
 
   def clear(self):
     self.extra.clear()
