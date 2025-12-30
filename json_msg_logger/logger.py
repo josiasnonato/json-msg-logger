@@ -10,6 +10,7 @@ class Logger():
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
     self.logger = logging.getLogger(__name__.split(".")[0])
+    print(f"Este é um {logging.getLogger(__name__.split(".")[0])}")
 
   def clear(self):
     self.extra.clear()
@@ -74,6 +75,7 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
+    print(self.logger)
     try:
       self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
