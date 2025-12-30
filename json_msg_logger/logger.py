@@ -57,7 +57,10 @@ class Logger():
   def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = logging_config_module.LogLevels.INFO, extra: dict = {}):
 
     self.message = message
-    self.level = level
+
+    if not level:
+      self.message.level = level
+      self.level = level
 
     if extra:
       self.extra.update(extra)
