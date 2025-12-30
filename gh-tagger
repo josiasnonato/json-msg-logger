@@ -86,19 +86,21 @@ except FileNotFoundError:
   print("The GitHub CLI (gh) command is not installed. Please install it to use this script.")
   exit(1)
 
-# Check if container command is installed
-try:
-  subprocess.run([CONTAINER_COMMAND, "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-except FileNotFoundError:
-  print(f"The {CONTAINER_COMMAND} command is not installed. Please install it to use this script.")
-  exit(1)
+# Check if container command is installed when --create-image is used
+if args.create_image != None:
+  try:
+    subprocess.run([CONTAINER_COMMAND, "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  except FileNotFoundError:
+    print(f"The {CONTAINER_COMMAND} command is not installed. Please install it to use this script.")
+    exit(1)
 
-# Check if go is installed
-try:
-  subprocess.run(["go", "version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-except FileNotFoundError:
-  print(f"The go command is not installed. Please install it to use this script.")
-  exit(1)
+# Check if go is installed when --go-build is used
+if args.go_build:
+  try:
+    subprocess.run(["go", "version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  except FileNotFoundError:
+    print(f"The go command is not installed. Please install it to use this script.")
+    exit(1)
 ############################################################################################
 
 def split_numbers(version: str) -> tuple[int, int, int]:
