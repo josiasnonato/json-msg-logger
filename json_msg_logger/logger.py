@@ -1,23 +1,21 @@
-import grpc
 import logging
 
 import json_msg_logger.messages as messages_module
 import json_msg_logger.messages as logging_config_module
 
-class LoggerMessages():
+class Logger():
 
-  def __init__(self, message: messages_module.Message, err: str = "", context: grpc.ServicerContext = None, extra: dict = {}):
-    self.context: grpc.ServicerContext = context
-    self.message: messages_module.Message = message
-    self.extra: dict = extra
-    self.err: str = err
+  def __init__(self):
+    self.extra: dict = {}
+    self.message: messages_module.Message = None
+    self.level: logging.Logger = logging.INFO
+    self.logger = logging.getLogger(__name__.split(".")[0])
 
   def clear(self):
     self.extra.clear()
-    self.err = None
+    self.level = None
     self.message = None
-    self.context = None
-
+    
   def trace(self):
     self.message.level = logging_config_module.LogLevels.TRACE
 
@@ -42,14 +40,8 @@ class LoggerMessages():
   def set_error(self, err: str):
     self.err = err
 
-  def set_context(self, context: grpc.ServicerContext):
-    self.context = context
-
   def set_extra(self, extra: dict):
     self.extra = extra
-  
-  def get_context(self) -> grpc.ServicerContext:
-    return self.context
   
   def get_message(self) -> logging_config_module.Message:
     return self.message
@@ -62,30 +54,27 @@ class LoggerMessages():
   def get_error(self) -> str:
     return self.err
   
-  def print(self):
+  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = logging_config_module.LogLevels.INFO, extra: dict = {}):
 
-    if self.context is not None:
-      ctx_metadata = dict(self.context.invocation_metadata())
+    self.message = message
+    self.level = level
 
-      if "request_id" in ctx_metadata:
-        self.extra.update({"request_id": ctx_metadata["request_id"]})
-        del ctx_metadata["request_id"]
-
-      self.extra.update({"context": {**ctx_metadata}})
+    if extra:
+      self.extra.update(extra)
 
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
 
-    if self.get_error() != "":
-      self.extra.update({"error": self.get_error()})
+    self._log()
     
-    
-    l = logging.getLogger(__name__.split(".")[0])
-    l.log(level=self.message.get_level(), msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
-    # Clear self data after print
-    self.clear()
-    # l.handlers[0].flush()
-    
+    for key in extra.keys():
+      self.extra.pop(key)
+
+  def _log(self):
+    try:
+      self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
+    except Exception as e:
+      self.logger.error(f"Logging failed: {str(e)}")
 
 # Example to print a log with simple message
 # LoggerMessages(message=GeneralMessages.RETRIEVE_DOCUMENTS_SUCCESS.value).print()
