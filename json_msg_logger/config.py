@@ -34,26 +34,24 @@ class LogLevels(logging.Logger):
   def trace(self, msg, *args, **kwargs):
     self.log(self.TRACE, msg, *args, **kwargs)
 
-def start_logger(app_name: str) -> logging.Logger:
-
-  logging.addLevelName(TRACE_LEVEL, "TRACE")
-  logger = logging.getLogger(app_name)
-  logger.setLevel(logging._nameToLevel.get("INFO"))
-
-  # Avoid adding duplicate handlers
-  if not logger.handlers:
-    handler = logging.StreamHandler()
-
-    formatter = JsonFormatter(app_name=app_name, datefmt="%Y-%m-%dT%H:%M:%S")
-    handler.setFormatter(formatter)
-
-    logger.addHandler(handler)
-    logger.propagate = False
-  
-  return logger
-
 def set_logger_level(log_level: str) -> None:
   logger = logging.getLogger(__name__.split(".")[0])
   logger.setLevel(logging._nameToLevel.get(log_level.upper()))
   if logger.handlers:
     logger.handlers[0].setLevel(logging._nameToLevel.get(log_level.upper()))
+
+app_name: str = __name__.split(".")[0]
+
+logging.addLevelName(TRACE_LEVEL, "TRACE")
+logger = logging.getLogger(__name__.split(".")[0])
+logger.setLevel(logging._nameToLevel.get("INFO"))
+
+# Avoid adding duplicate handlers
+if not logger.handlers:
+  handler = logging.StreamHandler()
+
+  formatter = JsonFormatter(app_name=app_name, datefmt="%Y-%m-%dT%H:%M:%S")
+  handler.setFormatter(formatter)
+
+  logger.addHandler(handler)
+  logger.propagate = False
