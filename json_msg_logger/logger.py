@@ -9,7 +9,7 @@ class Logger():
     self.extra: dict = {}
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
-    self.logger = logging.getLogger("caldoc")
+    # self.logger = logging.getLogger("caldoc")
 
   def clear(self):
     self.extra.clear()
@@ -59,8 +59,9 @@ class Logger():
     self.message = message
 
     if level:
-      self.message.level = level
       self.level = level
+    else:
+      self.level = self.message.level
 
     if extra:
       self.extra.update(extra)
@@ -76,11 +77,12 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
-    self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
+    logger = logging.getLogger("caldoc")
+    logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     try:
-      self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
+      logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
-      self.logger.error(f"Logging failed: {str(e)}")
+      logger.error(f"Logging failed: {str(e)}")
 
 # Example to print a log with simple message
 # LoggerMessages(message=GeneralMessages.RETRIEVE_DOCUMENTS_SUCCESS.value).print()
