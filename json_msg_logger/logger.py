@@ -2,7 +2,6 @@ import logging
 
 import json_msg_logger.messages as messages_module
 import json_msg_logger.messages as logging_config_module
-import json_msg_logger.config as logger
 
 class Logger():
 
@@ -10,7 +9,7 @@ class Logger():
     self.extra: dict = {}
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
-    # self.logger = logging.getLogger("caldoc")
+    self.logger = logging.getLogger("caldoc")
 
   def clear(self):
     self.extra.clear()
@@ -78,12 +77,11 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
-    # logger = logging.getLogger("caldoc")
-    logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
+    self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     try:
-      logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
+      self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
-      logger.error(f"Logging failed: {str(e)}")
+      self.logger.error(f"Logging failed: {str(e)}")
 
 # Example to print a log with simple message
 # LoggerMessages(message=GeneralMessages.RETRIEVE_DOCUMENTS_SUCCESS.value).print()
