@@ -81,6 +81,7 @@ class Logger():
     try:
       self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
+      print(f"Logging failed: {str(e)}")
       self.logger.error(f"Logging failed: {str(e)}")
 
 # Example to print a log with simple message
