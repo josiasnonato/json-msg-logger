@@ -22,7 +22,7 @@ class JsonFormatter(logging.Formatter):
     if hasattr(record, 'extra'):
       log_record.update(record.extra)
     
-    if APP_NAME:
+    if APP_NAME != "":
       log_record["app_name"] = APP_NAME
 
     return json.dumps(log_record)
