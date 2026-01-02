@@ -2,15 +2,16 @@ import logging
 import json
 
 TRACE_LEVEL = 1
+LOGGER_NAME: str = __name__.split(".")[0]
 
 class JsonFormatter(logging.Formatter):
-  def __init__(self, app_name: str, datefmt: str):
+  def __init__(self, logger_name: str, datefmt: str):
     super().__init__(datefmt=datefmt)
-    self.app_name = app_name
+    self.logger_name = logger_name
 
   def format(self, record):
     log_record = {
-      "app_name": self.app_name,
+      "logger": self.logger_name,
       "timestamp": self.formatTime(record, self.datefmt),
       "level": record.levelname,
       "message": record.getMessage(),
@@ -35,22 +36,21 @@ class LogLevels(logging.Logger):
     self.log(self.TRACE, msg, *args, **kwargs)
 
 def set_logger_level(log_level: str) -> None:
-  logger = logging.getLogger(__name__.split(".")[0])
+  logger = logging.getLogger(LOGGER_NAME)
   logger.setLevel(logging._nameToLevel.get(log_level.upper()))
   if logger.handlers:
     logger.handlers[0].setLevel(logging._nameToLevel.get(log_level.upper()))
 
-app_name: str = __name__.split(".")[0]
 
 logging.addLevelName(TRACE_LEVEL, "TRACE")
-logger = logging.getLogger(__name__.split(".")[0])
-logger.setLevel(logging._nameToLevel.get("INFO"))
+logger = logging.getLogger(LOGGER_NAME)
+logger.setLevel(logging._nameToLevel.get("DEBUG"))
 
 # Avoid adding duplicate handlers
 if not logger.handlers:
   handler = logging.StreamHandler()
 
-  formatter = JsonFormatter(app_name=app_name, datefmt="%Y-%m-%dT%H:%M:%S")
+  formatter = JsonFormatter(logger_name=LOGGER_NAME, datefmt="%Y-%m-%dT%H:%M:%S")
   handler.setFormatter(formatter)
 
   logger.addHandler(handler)
