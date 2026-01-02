@@ -58,7 +58,7 @@ class Logger():
 
     self.message = message
 
-    if not level:
+    if level:
       self.message.level = level
       self.level = level
 
@@ -74,7 +74,7 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
-    print(self.logger)
+    self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     try:
       self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
