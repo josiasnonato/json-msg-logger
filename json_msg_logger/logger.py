@@ -10,7 +10,6 @@ class Logger():
     self.extra: dict = {}
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
-    # self.logger = logging.getLogger("root")
 
   def clear(self):
     self.extra.clear()
@@ -69,9 +68,6 @@ class Logger():
 
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
-    
-    print(__package__)
-    print(f"Logging message: {self.message.get_message()} at level: {self.level} with extras: {self.extra}")
 
     self._log()
     
@@ -79,11 +75,9 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
-    # self.logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     try:
       logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
-      print(f"Logging failed: {str(e)}")
       logger.error(f"Logging failed: {str(e)}")
 
 # Example to print a log with simple message
