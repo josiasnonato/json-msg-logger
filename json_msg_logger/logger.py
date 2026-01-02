@@ -6,10 +6,12 @@ from json_msg_logger.config import logger
 
 class Logger():
 
-  def __init__(self):
+  def __init__(self, app_name: str = ""):
     self.extra: dict = {}
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
+    self.depth: int = 1
+    self.app_name: str = app_name
 
   def clear(self):
     self.extra.clear()
@@ -43,6 +45,12 @@ class Logger():
   def set_extra(self, extra: dict):
     self.extra = extra
   
+  def set_depth(self, depth: int):
+    self.depth = depth
+  
+  def set_app_name(self, app_name: str):
+    self.app_name = app_name
+  
   def get_message(self) -> logging_config_module.Message:
     return self.message
 
@@ -53,8 +61,14 @@ class Logger():
   
   def get_error(self) -> str:
     return self.err
+
+  def get_depth(self) -> int:
+    return self.depth
+
+  def get_app_name(self) -> str:
+    return self.app_name
   
-  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = logging_config_module.LogLevels.INFO, extra: dict = {}):
+  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = logging_config_module.LogLevels.INFO, extra: dict = {}, depth: int = 1):
 
     self.message = message
 
@@ -69,6 +83,9 @@ class Logger():
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
 
+    if self.depth:
+      self.depth = depth
+    
     self._log()
     
     for key in extra.keys():
