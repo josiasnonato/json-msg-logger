@@ -3,6 +3,7 @@ import json
 
 TRACE_LEVEL = 1
 LOGGER_NAME: str = __name__.split(".")[0]
+APP_NAME: str = ""
 
 class JsonFormatter(logging.Formatter):
   def __init__(self, logger_name: str, datefmt: str):
@@ -20,6 +21,9 @@ class JsonFormatter(logging.Formatter):
 
     if hasattr(record, 'extra'):
       log_record.update(record.extra)
+    
+    if APP_NAME:
+      log_record["app_name"] = APP_NAME
 
     return json.dumps(log_record)
 
@@ -41,6 +45,9 @@ def set_logger_level(log_level: str) -> None:
   if logger.handlers:
     logger.handlers[0].setLevel(logging._nameToLevel.get(log_level.upper()))
 
+def set_app_name(app_name: str) -> None:
+  global APP_NAME
+  APP_NAME = app_name
 
 logging.addLevelName(TRACE_LEVEL, "TRACE")
 logger = logging.getLogger(LOGGER_NAME)
