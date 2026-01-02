@@ -67,6 +67,8 @@ class Logger():
 
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
+    
+    print(f"Logging message: {self.message.get_message()} at level: {self.level} with extras: {self.extra}")
 
     self._log()
     
