@@ -2,6 +2,7 @@ import logging
 
 import json_msg_logger.messages as messages_module
 import json_msg_logger.messages as logging_config_module
+import json_msg_logger.config as logger
 
 class Logger():
 
@@ -77,7 +78,7 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
-    logger = logging.getLogger("caldoc")
+    # logger = logging.getLogger("caldoc")
     logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     try:
       logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
