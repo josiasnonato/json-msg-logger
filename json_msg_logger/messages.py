@@ -2,17 +2,16 @@ from enum import Enum
 
 from json_msg_logger.config import LogLevels
 
-class Statuses(Enum):
-  OK = "ok"
-  WARN = "warn"
-  ERROR = "error"
+# class Statuses(Enum):
+#   OK = "ok"
+#   WARN = "warn"
+#   ERROR = "error"
 
 class Message:
-  def __init__(self, message: str, level: LogLevels, status: Statuses = Statuses.OK, code_id: int = 0):
+  def __init__(self, message: str, level: LogLevels, code_id: int = 0):
     self.message: str = message
     self.code_id: int = code_id
     self.level: LogLevels = level
-    self.status: Statuses = status
 
   def set_message(self, message: str):
     self.message = message
@@ -23,9 +22,6 @@ class Message:
   def set_level(self, level: str):
     self.level = level
 
-  def set_status(self, status: str):
-    self.status = status
-
   def get_message(self) -> str:
     return self.message
 
@@ -35,9 +31,7 @@ class Message:
   def get_level(self) -> LogLevels:
     return self.level
   
-  def get_status(self) -> str:
-    return self.status.value
-  
+
 # class GeneralMessages(Enum):
 
 #   STARTING_APPLICATION = Message(message="Starting RAG application",code_id=10,level=LogLevels.INFO,status=Statuses.OK)
