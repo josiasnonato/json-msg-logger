@@ -93,9 +93,11 @@ class Logger():
 
   def _log(self):
 
+    print(f"============== logger name is: {logger.name}")
+
     if self.app_name != "":
       self.extra.update({"app_name": self.app_name})
-      
+
     try:
       logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
     except Exception as e:
