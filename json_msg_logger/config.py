@@ -40,7 +40,7 @@ class LogLevels(logging.Logger):
     self.log(self.TRACE, msg, *args, **kwargs)
 
 def set_logger_level(log_level: str) -> None:
-  logger = logging.getLogger(LOGGER_NAME)
+  logger = logging.getLogger(APP_NAME)
   logger.setLevel(logging._nameToLevel.get(log_level.upper()))
   if logger.handlers:
     logger.handlers[0].setLevel(logging._nameToLevel.get(log_level.upper()))
