@@ -83,8 +83,10 @@ class Logger():
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
 
-    if self.depth:
-      self.depth = depth
+    if self.depth < 0:
+      self.depth = 2
+    else:
+      self.depth = depth + 2
     
     self._log()
     
@@ -92,14 +94,12 @@ class Logger():
       self.extra.pop(key)
 
   def _log(self):
-
-    print(f"============== logger name is: {logger.name}")
-
+    
     if self.app_name != "":
       self.extra.update({"app_name": self.app_name})
 
     try:
-      logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=2)
+      logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=self.depth)
     except Exception as e:
       logger.error(f"Logging failed: {str(e)}")
 
