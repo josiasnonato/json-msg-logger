@@ -50,10 +50,10 @@ def set_app_name(app_name: str) -> None:
   APP_NAME = app_name
 
 logging.addLevelName(TRACE_LEVEL, "TRACE")
-logger = logging.getLogger(LOGGER_NAME)
+logger = logging.getLogger(APP_NAME)
 logger.setLevel(logging._nameToLevel.get("DEBUG"))
-logger.addFilter(logging.Filter(name=LOGGER_NAME))
-logger.name = APP_NAME
+# logger.addFilter(logging.Filter(name=LOGGER_NAME))
+# logger.name = APP_NAME
 
 # Avoid adding duplicate handlers
 if not logger.handlers:
