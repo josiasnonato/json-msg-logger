@@ -59,7 +59,7 @@ logger.setLevel(logging._nameToLevel.get("DEBUG"))
 if not logger.handlers:
   handler = logging.StreamHandler()
 
-  formatter = JsonFormatter(logger_name=LOGGER_NAME, datefmt="%Y-%m-%dT%H:%M:%S")
+  formatter = JsonFormatter(logger_name=APP_NAME, datefmt="%Y-%m-%dT%H:%M:%S")
   handler.setFormatter(formatter)
 
   logger.addHandler(handler)
