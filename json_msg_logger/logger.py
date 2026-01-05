@@ -68,14 +68,14 @@ class Logger():
   def get_app_name(self) -> str:
     return self.app_name
   
-  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = logging_config_module.LogLevels.INFO, extra: dict = {}, depth: int = 1):
+  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = None, extra: dict = {}, depth: int = 1):
 
     self.message = message
 
     if level:
       self.level = level
     else:
-      self.level = self.message.level
+      self.level = self.message.get_level()
 
     if extra:
       self.extra.update(extra)
@@ -99,7 +99,7 @@ class Logger():
       self.extra.update({"app_name": self.app_name})
 
     try:
-      logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=self.depth)
+      logger.log(level=self.level, msg=self.message.get_message(), extra={"extra": self.get_extra()}, stacklevel=self.get_depth())
     except Exception as e:
       logger.error(f"Logging failed: {str(e)}")
 
