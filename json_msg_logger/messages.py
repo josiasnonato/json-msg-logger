@@ -8,8 +8,9 @@ from json_msg_logger.config import LogLevels
 #   ERROR = "error"
 
 class Message:
-  def __init__(self, message: str, level: LogLevels, code_id: int = 0):
+  def __init__(self, message: str, level: LogLevels, err: str = None, code_id: int = 0):
     self.message: str = message
+    self.err: str = err
     self.code_id: int = code_id
     self.level: LogLevels = level
 
@@ -21,6 +22,12 @@ class Message:
   
   def set_level(self, level: str):
     self.level = level
+  
+  def set_error(self, err: str):
+    self.err = err
+
+  def get_error(self) -> str:
+    return self.err
 
   def get_message(self) -> str:
     return self.message

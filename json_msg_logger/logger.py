@@ -9,9 +9,8 @@ class Logger():
   def __init__(self, app_name: str = ""):
     self.extra: dict = {}
     self.message: messages_module.Message = None
-    self.err: str = None
     self.level: logging.Logger = logging.INFO
-    self.depth: int = 0
+    self.depth: int = 2
     self.app_name: str = app_name
 
   def clear(self):
@@ -69,9 +68,12 @@ class Logger():
   def get_app_name(self) -> str:
     return self.app_name
   
-  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = None, extra: dict = {}, depth: int = 0):
+  def log(self, message: logging_config_module.Message, level: logging_config_module.LogLevels = None, extra: dict = {}, depth: int = None):
 
     self.message = message
+    
+    if depth:
+      self.depth = depth
 
     if level:
       self.level = level
@@ -83,13 +85,8 @@ class Logger():
 
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
-
-    if self.depth < 0:
-      self.depth = 2
-    else:
-      self.depth = depth + 2
     
-    if self.err:
+    if self.message.get_error():
       self.extra.update({"error": self.err})
     
     self._log()
