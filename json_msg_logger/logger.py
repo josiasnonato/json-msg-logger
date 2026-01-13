@@ -39,9 +39,6 @@ class Logger():
   def set_message(self, message: logging_config_module.Message):
     self.message = message
 
-  def set_error(self, err: str):
-    self.err = err
-
   def set_extra(self, extra: dict):
     self.extra = extra
   
@@ -58,9 +55,6 @@ class Logger():
     if self.extra is None:
       return {}
     return self.extra
-  
-  def get_error(self) -> str:
-    return self.err
 
   def get_depth(self) -> int:
     return self.depth
@@ -86,8 +80,8 @@ class Logger():
     if self.message.get_code_id() != 0:
       self.extra.update({"code_id": self.message.get_code_id()})
     
-    if self.message.get_error():
-      self.extra.update({"error": self.err})
+    if self.message.get_error() != "":
+      self.extra.update({"error": self.message.get_error()})
     
     self._log()
     
