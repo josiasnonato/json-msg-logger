@@ -10,7 +10,7 @@ class Logger():
     self.extra: dict = {}
     self.message: messages_module.Message = None
     self.level: logging.Logger = logging.INFO
-    self.depth: int = 2
+    self.depth: int = 3
     self.app_name: str = app_name
 
   def clear(self):
